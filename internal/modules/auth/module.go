@@ -1,11 +1,12 @@
 package auth
 
 import (
-	"github.com/gin-gonic/gin"
-	"gorm.io/gorm"
 	"my-api/internal/modules/auth/handlers"
 	"my-api/internal/modules/auth/repository"
 	"my-api/internal/modules/auth/service"
+
+	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 )
 
 type Module struct {
@@ -26,6 +27,6 @@ func NewModule(db *gorm.DB) *Module {
 	}
 }
 
-func (m *Module) RegisterRoutes(router *gin.Engine) {
+func (m *Module) RegisterRoutes(router *gin.RouterGroup) {
 	RegisterRoutes(router, m.Handler)
 }

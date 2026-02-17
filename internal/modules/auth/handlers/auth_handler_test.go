@@ -6,11 +6,12 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/gin-gonic/gin"
-	"github.com/stretchr/testify/assert"
 	"my-api/internal/modules/auth/models"
 	"my-api/internal/modules/auth/service"
-	"my-api/testdata/mocks"
+	mocks "my-api/testdata/db"
+
+	"github.com/gin-gonic/gin"
+	"github.com/stretchr/testify/assert"
 )
 
 func setupTestHandler() *AuthHandler {
@@ -52,7 +53,7 @@ func TestAuthHandler_Register(t *testing.T) {
 func TestAuthHandler_Login(t *testing.T) {
 	mockRepo := mocks.NewMockUserRepository()
 	hashedPass := service.NewAuthService(mockRepo)
-	
+
 	// Register user first
 	_, _, _ = hashedPass.Register("test@example.com", "password123", "John", "Doe")
 

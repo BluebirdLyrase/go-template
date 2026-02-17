@@ -39,8 +39,12 @@ func main() {
 }
 
 func initializeModules(router *gin.Engine, db *gorm.DB) {
+
+	apiRoute := router.Group("/api")
+	apiV1Route := apiRoute.Group("/v1")
+
 	// Auth module
 	authModule := auth.NewModule(db)
-	authModule.RegisterRoutes(router)
+	authModule.RegisterRoutes(apiV1Route)
 	log.Println("✅ Auth module registered")
 }

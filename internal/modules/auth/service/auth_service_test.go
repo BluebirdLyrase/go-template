@@ -3,9 +3,10 @@ package service
 import (
 	"testing"
 
-	"github.com/stretchr/testify/assert"
 	"my-api/internal/modules/auth/models"
-	"my-api/testdata/mocks"
+	mocks "my-api/testdata/db"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestAuthService_Register(t *testing.T) {

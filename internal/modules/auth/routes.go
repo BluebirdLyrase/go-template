@@ -1,15 +1,16 @@
 package auth
 
 import (
-	"github.com/gin-gonic/gin"
 	"my-api/internal/modules/auth/handlers"
+
+	"github.com/gin-gonic/gin"
 )
 
-func RegisterRoutes(router *gin.Engine, handler *handlers.AuthHandler) {
-	auth := router.Group("/api/auth")
+func RegisterRoutes(router *gin.RouterGroup, handler *handlers.AuthHandler) {
+	auth := router.Group("/auth")
 	{
 		auth.POST("/register", handler.Register)
 		auth.POST("/login", handler.Login)
-		auth.GET("/me", handler.GetMe) // Protected endpoint
+		auth.GET("/me", handler.GetMe)
 	}
 }
