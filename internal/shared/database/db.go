@@ -4,8 +4,7 @@ import (
 	"log"
 
 	"my-api/internal/modules/auth/models"
-	productmodels "my-api/internal/modules/product/models"
-	usermodels "my-api/internal/modules/user/models"
+	auth_model "my-api/internal/modules/auth/models"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -28,9 +27,7 @@ func Connect(dsn string) *DB {
 
 func (db *DB) AutoMigrate() error {
 	return db.DB.AutoMigrate(
-		&models.User{},
-		&usermodels.Profile{},
-		&productmodels.Product{},
+		&auth_model.User{},
 	)
 }
 
@@ -44,14 +41,12 @@ func (db *DB) Close() error {
 
 // Mock DB for testing
 type MockDB struct {
-	Users    []*models.User
-	Products []*productmodels.Product
+	Users []*models.User
 }
 
 func NewMockDB() *MockDB {
 	return &MockDB{
-		Users:    make([]*models.User, 0),
-		Products: make([]*productmodels.Product, 0),
+		Users: make([]*models.User, 0),
 	}
 }
 

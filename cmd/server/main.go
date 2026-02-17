@@ -3,14 +3,13 @@ package main
 import (
 	"log"
 
-	"github.com/gin-gonic/gin"
-	"gorm.io/gorm"
 	"my-api/internal/modules/auth"
-	"my-api/internal/modules/product"
-	"my-api/internal/modules/user"
 	"my-api/internal/shared/config"
 	"my-api/internal/shared/database"
 	"my-api/internal/shared/router"
+
+	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 )
 
 func main() {
@@ -44,14 +43,4 @@ func initializeModules(router *gin.Engine, db *gorm.DB) {
 	authModule := auth.NewModule(db)
 	authModule.RegisterRoutes(router)
 	log.Println("✅ Auth module registered")
-
-	// User module
-	userModule := user.NewModule(db)
-	userModule.RegisterRoutes(router)
-	log.Println("✅ User module registered")
-
-	// Product module
-	productModule := product.NewModule(db)
-	productModule.RegisterRoutes(router)
-	log.Println("✅ Product module registered")
 }
