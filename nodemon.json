@@ -1,0 +1,6 @@
+{
+  "watch": ["."],
+  "ext": "go",
+  "ignore": ["vendor", "*_test.go"],
+  "exec": "go run ./cmd/server/main.go"
+}

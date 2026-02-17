@@ -13,17 +13,19 @@ type Module struct {
 	Handler    *handlers.AuthHandler
 	Service    *service.AuthService
 	Repository *repository.UserRepository
+	jwtSecret  []byte
 }
 
-func NewModule(db *gorm.DB) *Module {
+func NewModule(db *gorm.DB, secret string) *Module {
 	repo := repository.NewUserRepository(db)
-	svc := service.NewAuthService(repo)
+	svc := service.NewAuthService(repo, secret)
 	handler := handlers.NewAuthHandler(svc)
 
 	return &Module{
 		Handler:    handler,
 		Service:    svc,
 		Repository: repo,
+		jwtSecret:  []byte(secret),
 	}
 }
 

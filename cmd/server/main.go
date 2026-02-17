@@ -29,7 +29,7 @@ func main() {
 	r := router.New()
 
 	// Initialize and register modules
-	initializeModules(r, db.DB)
+	initializeModules(r, db.DB, cfg)
 
 	// Start server
 	log.Printf("🚀 Server starting on port %s", cfg.ServerPort)
@@ -38,13 +38,13 @@ func main() {
 	}
 }
 
-func initializeModules(router *gin.Engine, db *gorm.DB) {
+func initializeModules(router *gin.Engine, db *gorm.DB, cfg *config.Config) {
 
 	apiRoute := router.Group("/api")
 	apiV1Route := apiRoute.Group("/v1")
 
 	// Auth module
-	authModule := auth.NewModule(db)
+	authModule := auth.NewModule(db, cfg.JWTSecret)
 	authModule.RegisterRoutes(apiV1Route)
 	log.Println("✅ Auth module registered")
 }

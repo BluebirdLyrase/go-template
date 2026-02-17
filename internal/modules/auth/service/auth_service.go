@@ -9,14 +9,20 @@ import (
 	"my-api/internal/modules/auth/models"
 	"my-api/internal/modules/auth/repository"
 	"my-api/internal/shared/errors"
+
+	"github.com/golang-jwt/jwt/v5"
 )
 
 type AuthService struct {
-	repo repository.UserRepositoryInterface
+	repo      repository.UserRepositoryInterface
+	jwtSecret []byte
 }
 
-func NewAuthService(repo repository.UserRepositoryInterface) *AuthService {
-	return &AuthService{repo: repo}
+func NewAuthService(repo repository.UserRepositoryInterface, secret string) *AuthService {
+	return &AuthService{
+		repo:      repo,
+		jwtSecret: []byte(secret),
+	}
 }
 
 func (s *AuthService) Register(email, password, firstName, lastName string) (*models.User, *models.Token, error) {
@@ -40,8 +46,10 @@ func (s *AuthService) Register(email, password, firstName, lastName string) (*mo
 		return nil, nil, errors.ErrInternalServer
 	}
 
-	// Generate token
-	token := generateToken(user.ID)
+	token, err := generateToken(user.ID, s.jwtSecret)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	return user, token, nil
 }
@@ -58,8 +66,10 @@ func (s *AuthService) Login(email, password string) (*models.User, *models.Token
 		return nil, nil, errors.ErrInvalidCredentials
 	}
 
-	// Generate token
-	token := generateToken(user.ID)
+	token, err := generateToken(user.ID, s.jwtSecret)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	return user, token, nil
 }
@@ -83,10 +93,41 @@ func verifyPassword(hash, password string) bool {
 	return hash == hashPassword(password)
 }
 
-func generateToken(userID uint) *models.Token {
-	return &models.Token{
-		AccessToken:  fmt.Sprintf("token_%d_%d", userID, time.Now().Unix()),
-		RefreshToken: fmt.Sprintf("refresh_%d_%d", userID, time.Now().Unix()),
-		ExpiresIn:    3600,
+func generateToken(userID uint, jwtSecret []byte) (*models.Token, error) {
+	accessClaims := jwt.MapClaims{
+		"sub": userID,
+		"exp": time.Now().Add(time.Hour).Unix(),
 	}
+
+	accessToken := jwt.NewWithClaims(jwt.SigningMethodHS256, accessClaims)
+	access, err := accessToken.SignedString(jwtSecret)
+	if err != nil {
+		return nil, err
+	}
+
+	return &models.Token{
+		AccessToken: access,
+		ExpiresIn:   3600,
+	}, nil
+}
+
+func (s *AuthService) ExtractUserIDFromToken(tokenStr string) (uint, error) {
+	token, err := jwt.Parse(tokenStr, func(t *jwt.Token) (interface{}, error) {
+		return s.jwtSecret, nil
+	})
+	if err != nil || !token.Valid {
+		return 0, errors.New("token is invalid or expired")
+	}
+
+	claims, ok := token.Claims.(jwt.MapClaims)
+	if !ok {
+		return 0, errors.New("invalid token claims")
+	}
+
+	sub, ok := claims["sub"].(float64)
+	if !ok {
+		return 0, errors.New("invalid token subject")
+	}
+
+	return uint(sub), nil
 }

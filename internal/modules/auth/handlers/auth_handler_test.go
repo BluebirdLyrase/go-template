@@ -14,10 +14,12 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+const mockJWTSecret = "test"
+
 func setupTestHandler() *AuthHandler {
 	gin.SetMode(gin.TestMode)
 	mockRepo := mocks.NewMockUserRepository()
-	authService := service.NewAuthService(mockRepo)
+	authService := service.NewAuthService(mockRepo, mockJWTSecret)
 	return NewAuthHandler(authService)
 }
 
@@ -52,7 +54,7 @@ func TestAuthHandler_Register(t *testing.T) {
 
 func TestAuthHandler_Login(t *testing.T) {
 	mockRepo := mocks.NewMockUserRepository()
-	hashedPass := service.NewAuthService(mockRepo)
+	hashedPass := service.NewAuthService(mockRepo, mockJWTSecret)
 
 	// Register user first
 	_, _, _ = hashedPass.Register("test@example.com", "password123", "John", "Doe")

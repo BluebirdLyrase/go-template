@@ -9,9 +9,11 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+const mockJWTSecret = "test"
+
 func TestAuthService_Register(t *testing.T) {
 	mockRepo := mocks.NewMockUserRepository()
-	service := NewAuthService(mockRepo)
+	service := NewAuthService(mockRepo, mockJWTSecret)
 
 	user, token, err := service.Register("test@example.com", "password123", "John", "Doe")
 
@@ -29,7 +31,7 @@ func TestAuthService_RegisterDuplicate(t *testing.T) {
 		ID:    1,
 		Email: "test@example.com",
 	})
-	service := NewAuthService(mockRepo)
+	service := NewAuthService(mockRepo, mockJWTSecret)
 
 	_, _, err := service.Register("test@example.com", "password123", "John", "Doe")
 
@@ -47,7 +49,7 @@ func TestAuthService_Login(t *testing.T) {
 		FirstName: "John",
 	})
 
-	service := NewAuthService(mockRepo)
+	service := NewAuthService(mockRepo, mockJWTSecret)
 
 	user, token, err := service.Login("test@example.com", "password123")
 
@@ -66,7 +68,7 @@ func TestAuthService_LoginInvalidPassword(t *testing.T) {
 		Password: hashPassword("password123"),
 	})
 
-	service := NewAuthService(mockRepo)
+	service := NewAuthService(mockRepo, mockJWTSecret)
 
 	_, _, err := service.Login("test@example.com", "wrongpassword")
 
@@ -76,7 +78,7 @@ func TestAuthService_LoginInvalidPassword(t *testing.T) {
 
 func TestAuthService_LoginUserNotFound(t *testing.T) {
 	mockRepo := mocks.NewMockUserRepository()
-	service := NewAuthService(mockRepo)
+	service := NewAuthService(mockRepo, mockJWTSecret)
 
 	_, _, err := service.Login("nonexistent@example.com", "password123")
 
@@ -92,7 +94,7 @@ func TestAuthService_GetUserByID(t *testing.T) {
 		FirstName: "John",
 	})
 
-	service := NewAuthService(mockRepo)
+	service := NewAuthService(mockRepo, mockJWTSecret)
 
 	user, err := service.GetUserByID(1)
 
@@ -103,7 +105,7 @@ func TestAuthService_GetUserByID(t *testing.T) {
 
 func TestAuthService_GetUserByIDNotFound(t *testing.T) {
 	mockRepo := mocks.NewMockUserRepository()
-	service := NewAuthService(mockRepo)
+	service := NewAuthService(mockRepo, mockJWTSecret)
 
 	_, err := service.GetUserByID(999)
 
