@@ -29,7 +29,8 @@ func (s *AuthService) Register(email, password, firstName, lastName string) (*mo
 	// Check if user already exists
 	existing, _ := s.repo.GetByEmail(email)
 	if existing != nil {
-		return nil, nil, errors.ErrUserAlreadyExists
+		return nil, nil, errors.NewError(400, "user already exists")
+
 	}
 
 	// Create new user
@@ -77,7 +78,7 @@ func (s *AuthService) Login(email, password string) (*models.User, *models.Token
 func (s *AuthService) GetUserByID(id uint) (*models.User, error) {
 	user, err := s.repo.GetByID(id)
 	if err != nil || user == nil {
-		return nil, errors.ErrUserNotFound
+		return nil, errors.New("user not found")
 	}
 	return user, nil
 }

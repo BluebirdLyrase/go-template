@@ -13,13 +13,10 @@ type ErrorResponse struct {
 }
 
 var (
-	ErrUserNotFound       = NewError(404, "user not found")
-	ErrUserAlreadyExists  = NewError(400, "user already exists")
-	ErrInvalidCredentials = NewError(401, "invalid credentials")
-	ErrUnauthorized       = NewError(401, "unauthorized")
-	ErrProductNotFound    = NewError(404, "product not found")
-	ErrInvalidEmail       = NewError(400, "invalid email format")
-	ErrInvalidPassword    = NewError(400, "password must be at least 6 characters")
+	ErrNotFound           = NewError(404, "Not Found")
+	ErrBadRequest         = NewError(400, "Bad Request")
+	ErrInvalidCredentials = NewError(401, "Invalid Credentials")
+	ErrUnauthorized       = NewError(401, "Unauthorized")
 	ErrInternalServer     = NewError(500, "internal server error")
 )
 

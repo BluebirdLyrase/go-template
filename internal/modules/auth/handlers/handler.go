@@ -76,7 +76,7 @@ func (h *AuthHandler) GetMe(c *gin.Context) {
 
 	user, err := h.service.GetUserByID(userID)
 	if err != nil {
-		errors.HandleError(c, err)
+		errors.HandleError(c, errors.ErrNotFound, err.Error())
 		return
 	}
 
