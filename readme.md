@@ -18,20 +18,20 @@ Designed to accelerate development of scalable REST APIs and microservices using
 
 ## 📁 Project Structure
 
-/cmd # Application entrypoints
-/internal
-/modules
-    /[module-name]
-        /repository # Data access layer
-        /service # Business logic
-        /handler # HTTP handlers
-        /model # Domain & DTO models
-        module.go # Module initialization / wiring
-        routes.go # Route registration
-/shared
-    /database # DB initialization
-    /config # Environment config
-    /utils # Global/helper functions
+- /cmd # Application entrypoints
+- /internal
+- /modules
+    - /[module-name]
+        - /repository # Data access layer
+        - /service # Business logic
+        - /handler # HTTP handlers
+        - /model # Domain & DTO models
+        - module.go # Module initialization / wiring
+        - routes.go # Route registration
+- /shared
+    - /database # DB initialization
+    - /config # Environment config
+    - /utils # Global/helper functions
 
 ## 🛠 Installation
 
