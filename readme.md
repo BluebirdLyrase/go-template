@@ -51,7 +51,7 @@ nodemon
 
 ## 🧪 Run Tests
 
-go test -v ./internal/modules/...
+go test -v ./internal/...
 
 
 ---

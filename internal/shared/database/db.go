@@ -3,7 +3,6 @@ package database
 import (
 	"log"
 
-	"my-api/internal/modules/auth/models"
 	auth_model "my-api/internal/modules/auth/models"
 	address_model "my-api/internal/modules/option/address/models"
 
@@ -40,18 +39,4 @@ func (db *DB) Close() error {
 		return err
 	}
 	return sqlDB.Close()
-}
-
-type MockDB struct {
-	Users []*models.User
-}
-
-func NewMockDB() *MockDB {
-	return &MockDB{
-		Users: make([]*models.User, 0),
-	}
-}
-
-func (m *MockDB) GetDB() *gorm.DB {
-	return &gorm.DB{}
 }
