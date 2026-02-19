@@ -3,7 +3,7 @@ package handlers
 import (
 	"my-api/internal/modules/option/address/service"
 	"my-api/internal/shared/errors"
-	"my-api/internal/shared/helper"
+	"my-api/internal/shared/utils"
 
 	"github.com/gin-gonic/gin"
 )
@@ -54,7 +54,7 @@ func (h *AddressHandler) GetAllCities(c *gin.Context) {
 }
 
 func (h *AddressHandler) GetCityByID(c *gin.Context) {
-	id, err := helper.ParseUintParam(c, "id")
+	id, err := utils.ParseUintParam(c, "id")
 	if err != nil {
 		c.JSON(400, gin.H{"error": "invalid city id"})
 		return
