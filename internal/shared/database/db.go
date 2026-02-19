@@ -5,6 +5,7 @@ import (
 
 	"my-api/internal/modules/auth/models"
 	auth_model "my-api/internal/modules/auth/models"
+	address_model "my-api/internal/modules/option/address/models"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -28,6 +29,8 @@ func Connect(dsn string) *DB {
 func (db *DB) AutoMigrate() error {
 	return db.DB.AutoMigrate(
 		&auth_model.User{},
+		&address_model.Country{},
+		&address_model.City{},
 	)
 }
 
@@ -39,7 +42,6 @@ func (db *DB) Close() error {
 	return sqlDB.Close()
 }
 
-// Mock DB for testing
 type MockDB struct {
 	Users []*models.User
 }
@@ -50,7 +52,6 @@ func NewMockDB() *MockDB {
 	}
 }
 
-// Helper method to convert MockDB to GORM-like interface
 func (m *MockDB) GetDB() *gorm.DB {
 	return &gorm.DB{}
 }

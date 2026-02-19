@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"my-api/internal/modules/auth/models"
-	mocks "my-api/testdata/db"
+	mocks "my-api/internal/modules/auth/repository"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -73,7 +73,7 @@ func TestAuthService_LoginInvalidPassword(t *testing.T) {
 	_, _, err := service.Login("test@example.com", "wrongpassword")
 
 	assert.Error(t, err)
-	assert.Equal(t, "invalid credentials", err.Error())
+	assert.Equal(t, "Invalid Credentials", err.Error())
 }
 
 func TestAuthService_LoginUserNotFound(t *testing.T) {
@@ -83,7 +83,7 @@ func TestAuthService_LoginUserNotFound(t *testing.T) {
 	_, _, err := service.Login("nonexistent@example.com", "password123")
 
 	assert.Error(t, err)
-	assert.Equal(t, "invalid credentials", err.Error())
+	assert.Equal(t, "Invalid Credentials", err.Error())
 }
 
 func TestAuthService_GetUserByID(t *testing.T) {

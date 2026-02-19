@@ -7,8 +7,8 @@ import (
 	"testing"
 
 	"my-api/internal/modules/auth/models"
+	mocks "my-api/internal/modules/auth/repository"
 	"my-api/internal/modules/auth/service"
-	mocks "my-api/testdata/db"
 
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"

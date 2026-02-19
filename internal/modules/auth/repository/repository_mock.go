@@ -1,12 +1,9 @@
-package mocks
+package repository
 
 import (
 	authmodels "my-api/internal/modules/auth/models"
-	// usermodels "my-api/internal/modules/user/models"
-	// productmodels "my-api/internal/modules/product/models"
 )
 
-// Mock User Repository
 type MockUserRepository struct {
 	Users []*authmodels.User
 }
