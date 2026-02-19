@@ -1,8 +1,9 @@
 package repository
 
 import (
-	"gorm.io/gorm"
 	"my-api/internal/modules/auth/models"
+
+	"gorm.io/gorm"
 )
 
 type UserRepository struct {
@@ -37,20 +38,4 @@ func (r *UserRepository) GetByEmail(email string) (*models.User, error) {
 		return nil, err
 	}
 	return &user, nil
-}
-
-func (r *UserRepository) Update(user *models.User) error {
-	return r.db.Save(user).Error
-}
-
-func (r *UserRepository) Delete(id uint) error {
-	return r.db.Delete(&models.User{}, id).Error
-}
-
-func (r *UserRepository) GetAll() ([]*models.User, error) {
-	var users []*models.User
-	if err := r.db.Find(&users).Error; err != nil {
-		return nil, err
-	}
-	return users, nil
 }
